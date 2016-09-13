@@ -7,7 +7,7 @@ var OUTPUT_DIR = './doc'
 
 var parse = function(){
   program
-  .version('1.1.0');
+  .version('1.2.0');
 
   program
   .command('monitor')
@@ -15,7 +15,8 @@ var parse = function(){
   .option('-d, --discovery <hostname>', 'Discovery service address')
   //.option('-a, --analytics <hostname>', 'Analytics address')
   .option('-t, --timeout <time>', 'Request timeout', parseInt)
-  .option('-r, --refresh-time <time>', 'Interval to refresh data (in ms)', parseInt)
+  .option('-r, --refresh-time <time>', 'Interval to refresh data (in ms)',
+  parseInt)
   .action(function(options){
     var init = require('./init');
     var monitor = require('./monitor');
@@ -27,6 +28,32 @@ var parse = function(){
     monitor.run();
   });
 
+  program
+  .command('dump')
+  .description('Dump a json object representing the monitoring information '+
+  'cluster at a given time')
+  .option('-d, --discovery <hostname>', 'Discovery service address')
+  .option('--cnf, --config-set', 'Configuration Nodes')
+  .option('--ctl, --control-set', 'Control Nodes')
+  .option('--vr, --vrouter-set', 'VRouters')
+  .action(function(options){
+    var init = require('./init');
+    var dump = require('./dump');
+    var sets = [];
+
+    init.initFromExtConfig();
+    init.initFromEnv();
+    init.initFromOptions(program);
+    init.checkConfig();
+
+    if(options.configSet) sets.push('configSet');
+    if(options.controlSet) sets.push('controlSet');
+    if(options.vrouterSet) sets.push('vRouterSet');
+
+    if(!sets) console.log('No options provided !');
+
+    dump.run(sets);
+  });
 
   program
   .command('doc')
