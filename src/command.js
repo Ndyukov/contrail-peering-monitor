@@ -1,17 +1,12 @@
 var program = require('commander');
-var exec = require('child_process');
-
-var YUI_CONFIG = './config/yuidoc.json'
-var YUI = './node_modules/yuidocjs/lib/cli.js'
-var OUTPUT_DIR = './doc'
 
 var parse = function(){
   program
-  .version('1.2.0');
+  .version('1.2.1');
 
   program
   .command('monitor')
-  .description('Run the monitoring on the Contrail cluster')
+  .description('Run the monitoring dashboard on the Contrail cluster')
   .option('-d, --discovery <hostname>', 'Discovery service address')
   //.option('-a, --analytics <hostname>', 'Analytics address')
   .option('-t, --timeout <time>', 'Request timeout', parseInt)
@@ -30,7 +25,7 @@ var parse = function(){
 
   program
   .command('dump')
-  .description('Dump a json object representing the monitoring information '+
+  .description('Dump a json object representing the monitoring state of the '+
   'cluster at a given time')
   .option('-d, --discovery <hostname>', 'Discovery service address')
   .option('--cnf, --config-set', 'Configuration Nodes')
@@ -59,10 +54,8 @@ var parse = function(){
   .command('doc')
   .description('Generate documentations')
   .action(function(){
-    var args = ['--config', YUI_CONFIG, '--outdir', OUTPUT_DIR, '.'];
-    exec.execFile(YUI, args, {}, function(){
-      console.log("Documentation generation done.");
-    });
+    var doc = require('./doc');
+    doc.run();
   });
 
   program.parse(process.argv);

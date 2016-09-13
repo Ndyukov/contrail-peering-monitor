@@ -1,5 +1,4 @@
 var async = require('async');
-var util = require('util');
 
 var ContrailSet = require('./Set/ContrailSet');
 

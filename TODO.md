@@ -13,3 +13,4 @@
 * Add logs with winston module
 * Add some color
 * Centralize template for widget
+* Set the documentation configuration in th contrail-peering-monitor.json

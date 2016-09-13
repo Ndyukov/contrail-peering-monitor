@@ -6,7 +6,7 @@
     $ npm install
 
 ## Version
- v.1.2.0
+ v.1.2.1
 
 ## Usage
     $ ./contrail-peering-monitor --help
@@ -16,8 +16,8 @@
 
     Commands:
 
-    monitor [options]   Run the monitoring on the Contrail cluster
-    dump [options]      Dump a json object representing the monitoring information cluster at a given time
+    monitor [options]   Run the monitoring dashboard on the Contrail cluster
+    dump [options]      Dump a json object representing the monitoring state of the cluster at a given time
     doc                 Generate documentations
 
      Options:
