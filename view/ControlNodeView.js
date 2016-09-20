@@ -38,7 +38,8 @@ var parseData = function(data){
   }
   if(data.ifmapPeer){
     for(i in data.ifmapPeer.peer){
-      result.data.push(['IFMAP '+data.ifmapPeer.peer[i].status, data.ifmapPeer.peer[i].host]);
+      result.data.push(['IFMAP '+data.ifmapPeer.peer[i].status,
+      data.ifmapPeer.peer[i].host]);
     }
   }
   return result;
@@ -48,7 +49,8 @@ ControlNodeView.prototype.append = function(screen){
   screen.append(this.view);
 }
 
-ControlNodeView.prototype.update = function(screen){
+ControlNodeView.prototype.update = function(data){
+  this.data = data;
   var dataSet = parseData(this.data);
   dataSet = utils.setColorTag(dataSet);
   this.view.setData(dataSet);
@@ -57,7 +59,8 @@ ControlNodeView.prototype.update = function(screen){
 var main = function(screen){
   utils.stdin(function(err, data){
     var result = parseData(data);
-    console.log('################\n# Parse Object #\n################\n'+require('util').inspect(result, { depth: null }));
+    console.log('################\n# Parse Object #\n################\n'+
+    require('util').inspect(result, { depth: null }));
   });
 }
 

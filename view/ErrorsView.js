@@ -24,11 +24,10 @@ var initView = function(width, offset){
     columnSpacing: 5, //in chars
     columnWidth: [20, 25] /*in chars*/
   });
-  //table.rows.style.selected.bg = undefined;
   return table;
 }
 
-var parsevRouterSet = function(vRouterSet){
+var parsevRoutersInError = function(vRouterSet){
   var result = {
     headers: ['Nodes', 'Status'],
     data:[]
@@ -47,15 +46,16 @@ ErrorsView.prototype.append = function(screen){
 }
 
 ErrorsView.prototype.isErrors = function(){
-  var result = parsevRouterSet(this.vRouterSet);
+  var result = parsevRoutersInError(this.vRouterSet);
   if(result.data.length == 0){
     return false;
   }
   return true;
 }
 
-ErrorsView.prototype.update = function(screen){
-  var dataSet = parsevRouterSet(this.vRouterSet);
+ErrorsView.prototype.update = function(data){
+  this.vRouterSet = data;
+  var dataSet = parsevRoutersInError(this.vRouterSet);
   dataSet = utils.setColorTag(dataSet);
   this.view.setData(dataSet);
 }
@@ -63,9 +63,9 @@ ErrorsView.prototype.update = function(screen){
 var main = function(screen){
   var controlNode = 'd-octclc-0000';
   utils.stdin(function(err, data){
-    //console.log(data[0]);
-    var result = parsevRouterSet(data);
-    console.log('################\n# Parse Object #\n################\n'+require('util').inspect(result, { depth: null }));
+    var result = parsevRoutersInError(data);
+    console.log('################\n# Parse Object #\n################\n'+
+    require('util').inspect(result, { depth: null }));
   });
 }
 

@@ -11,6 +11,7 @@ var ContrailSetView = function(contrailSet, width, offset){
   this.type = 'ContrailSetView';
   this.view = initView(width, offset);
   this.children = [];
+  this.init();
 }
 
 var initView = function(width, offset){
@@ -18,12 +19,8 @@ var initView = function(width, offset){
     width: width+'%',
     height: '100%',
     left: offset+'%',
-    /*border: {
-      type: 'line'
-    },*/
     style: {
       fg: 'white',
-      //bg: 'magenta',
       border: {
         fg: '#f0f0f0'
       }
@@ -32,29 +29,33 @@ var initView = function(width, offset){
   return box;
 }
 
-var parseData = function(data){
-
+ContrailSetView.prototype.init = function(screen){
+  var offset = (100/3);
+  this.children.push(new ConfigSetView(this.data.configSet, offset, 0*offset));
+  this.children.push(new ControlSetView(this.data.controlSet, offset, 1*offset));
+  this.children.push(new VRouterSetView(this.data.controlSet,
+    this.data.vRouterSet, offset, 2*offset));
+  for(i in this.children){
+    this.view.append(this.children[i].view);
+  }
 }
 
 ContrailSetView.prototype.append = function(screen){
   screen.append(this.view);
 }
 
-ContrailSetView.prototype.update = function(screen){
-  var offset = (100/3);
-
-  // if(this.data.error){
-  //   this.view.content = this.data.error;
-  //   return 0;
-  // }
-
-  this.children.push(new ConfigSetView(this.data.configSet, offset, 0*offset));
-  this.children.push(new ControlSetView(this.data.controlSet, offset, 1*offset));
-  this.children.push(new VRouterSetView(this.data.controlSet, this.data.vRouterSet, offset, 2*offset));
-
+ContrailSetView.prototype.update = function(data){
+  this.data = data;
   for(i in this.children){
-    this.view.append(this.children[i].view);
-    this.children[i].update(screen);
+    if(this.children[i].type == 'ConfigSetView'){
+      this.children[i].update(data.configSet);
+    }
+    else if(this.children[i].type == 'ControlSetView'){
+      this.children[i].update(data.controlSet);
+    }
+    else if(this.children[i].type == 'VRouterSetView'){
+      this.children[i].update(data.controlSet, data.vRouterSet);
+    }
   }
 }
 

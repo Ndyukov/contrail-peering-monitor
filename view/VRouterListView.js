@@ -36,7 +36,8 @@ var parseData = function(controlNode, data){
   for(i in data.nodes){
     var node = data.nodes[i];
     if(node.xmppPeer){
-      if(node.xmppPeer.active == controlNode && node['services'][0]['status'] == 'UP'){
+      if(node.xmppPeer.active == controlNode &&
+        node['services'][0]['status'] == 'UP'){
         result.data.push([node['name'], node['services'][0]['status']]);
       }
     }
@@ -48,7 +49,9 @@ VRouterListView.prototype.append = function(screen){
   screen.append(this.view);
 }
 
-VRouterListView.prototype.update = function(screen){
+VRouterListView.prototype.update = function(parent, data){
+  this.parent = parent;
+  this.data = data;
   var dataSet = parseData(this.parent, this.data);
   dataSet = utils.setColorTag(dataSet);
   this.view.setData(dataSet);
@@ -58,7 +61,8 @@ var main = function(screen){
   var controlNode = 'd-octclc-0000';
   utils.stdin(function(err, data){
     var result = parseData(controlNode, data);
-    console.log('################\n# Parse Object #\n################\n'+require('util').inspect(result, { depth: null }));
+    console.log('################\n# Parse Object #\n################\n'+
+    require('util').inspect(result, { depth: null }));
   });
 }
 

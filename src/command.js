@@ -2,7 +2,7 @@ var program = require('commander');
 
 var parse = function(){
   program
-  .version('1.2.1');
+  .version('1.2.2');
 
   program
   .command('monitor')

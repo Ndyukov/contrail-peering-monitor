@@ -24,7 +24,6 @@ var initView = function(name, width, offset){
     columnSpacing: 5, //in chars
     columnWidth: [20, 25] /*in chars*/
   });
-//  table.rows.style.selected.bg = undefined;
   return table;
 }
 
@@ -40,11 +39,9 @@ var parseData = function(data){
   return result;
 }
 
-ConfigNodeView.prototype.append = function(screen){
-  screen.append(this.view);
-}
 
-ConfigNodeView.prototype.update = function(screen){
+ConfigNodeView.prototype.update = function(data){
+  this.data = data;
   var dataSet = parseData(this.data);
   dataSet = utils.setColorTag(dataSet);
   this.view.setData(dataSet);
@@ -55,7 +52,8 @@ var main = function(screen){
     //console.log(data[0]);
     var result = parseData(data);
     result = utils.setColorTag(result);
-    console.log('################\n# Parse Object #\n################\n'+require('util').inspect(result, { depth: null }));
+    console.log('################\n# Parse Object #\n################\n'+
+    require('util').inspect(result, { depth: null }));
   });
 }
 

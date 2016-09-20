@@ -10,18 +10,15 @@ var ClusterView = function(contrailSet){
   this.type = 'ClusterView';
   this.view = initView();
   this.children = [];
+  this.init();
 }
 
 var initView = function(){
   var box = blessed.box({
     width: '100%',
     height: '100%',
-    /*border: {
-      type: 'line'
-    },*/
     style: {
       fg: 'white',
-      //bg: 'magenta',
       border: {
         fg: '#f0f0f0'
       }
@@ -30,36 +27,40 @@ var initView = function(){
   return box;
 }
 
-var parseNodesinError = function(data){
-
-}
-
-ClusterView.prototype.append = function(screen){
-  screen.append(this.view);
-}
-
-ClusterView.prototype.update = function(screen){
+ClusterView.prototype.init = function(){
   var offset = (100/3);
   var width = 70;
   var errorView = new ErrorsView(this.data.vRouterSet, 99-width, width+1);
+
   // check disco
   if(this.data.error){
     this.view.content = this.data.error;
     return 0;
   }
-  // check nodes in eror
+
+  // check nodes in error
   if(errorView.isErrors()){
     this.children.push(errorView);
   }
   else{
     width = 100;
   }
-
   this.children.push(new ContrailSetView(this.data, width, 0));
 
   for(i in this.children){
     this.view.append(this.children[i].view);
-    this.children[i].update(screen);
+  }
+}
+
+ClusterView.prototype.update = function(data){
+  this.data = data;
+  for(i in this.children){
+    if(this.children[i].type == 'ErrorsView'){
+      this.children[i].update(this.data.vRouterSet);
+    }
+    else{
+      this.children[i].update(this.data);
+    }
   }
 }
 

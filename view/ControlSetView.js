@@ -9,6 +9,7 @@ var ControlSetView = function(data, height, offset){
   this.type = 'ControlSetView';
   this.view = initView(height, offset);
   this.children = [];
+  this.init();
 }
 
 var initView = function(height, offset){
@@ -17,12 +18,8 @@ var initView = function(height, offset){
     width: '90%',
     left: '5%',
     height: height+'%',
-    /*border: {
-      type: 'line'
-    },*/
     style: {
       fg: 'white',
-      //bg: 'magenta',
       border: {
         fg: '#f0f0f0'
       }
@@ -31,23 +28,22 @@ var initView = function(height, offset){
   return box;
 }
 
-var parseData = function(data){
-
-}
-
-ControlSetView.prototype.append = function(screen){
-  screen.append(this.view);
-}
-
-ControlSetView.prototype.update = function(screen){
+ControlSetView.prototype.init = function(){
   var nodes = this.data.nodes;
   var offset = (100/nodes.length);
 
   for(i in nodes){
     this.children.push(new ControlNodeView(nodes[i], offset, i*offset));
-    //screen.log(nodes[i]);
     this.view.append(this.children[i].view);
-    this.children[i].update(screen);
+  }
+}
+
+ControlSetView.prototype.update = function(data){
+  this.data = data;
+  var nodes = this.data.nodes;
+
+  for(i in nodes){
+    this.children[i].update(nodes[i]);
   }
 }
 

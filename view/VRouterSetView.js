@@ -10,6 +10,7 @@ var VRouterSetView = function(controlData, vRouterData, height, offset){
   this.type = 'VRouterSetView';
   this.view = initView(height, offset);
   this.children = [];
+  this.init();
 }
 
 var initView = function(height, offset){
@@ -18,12 +19,8 @@ var initView = function(height, offset){
     width: '99%',
     left: '0%',
     height: height+'%',
-    /*border: {
-      type: 'line'
-    },*/
     style: {
       fg: 'white',
-      //bg: 'magenta',
       border: {
         fg: '#f0f0f0'
       }
@@ -36,18 +33,28 @@ var parseData = function(data){
 
 }
 
-VRouterSetView.prototype.append = function(screen){
-  screen.append(this.view);
-}
-
-VRouterSetView.prototype.update = function(screen){
+VRouterSetView.prototype.init = function(){
   var nodes = this.controlData.nodes;
   var offset = (100/nodes.length);
 
   for(i in nodes){
-    this.children.push(new VRouterListView(nodes[i].name, this.vRouterData, offset, i*offset));
+    this.children.push(new VRouterListView(nodes[i].name,this.vRouterData,
+      offset, i*offset));
     this.view.append(this.children[i].view);
-    this.children[i].update(screen);
+  }
+};
+
+VRouterSetView.prototype.append = function(screen){
+  screen.append(this.view);
+}
+
+VRouterSetView.prototype.update = function(controlData, vRouterData){
+  this.controlData = controlData;
+  this.vRouterData = vRouterData;
+  var nodes = this.controlData.nodes;
+
+  for(i in nodes){
+    this.children[i].update(nodes[i].name, this.vRouterData);
   }
 }
 
