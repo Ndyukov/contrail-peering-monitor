@@ -21,6 +21,8 @@ var util = require('util');
  * @param {String} eventEmitter eventEmitter
  */
 var ContrailSet = function(discovery, eventEmitter){
+  this.type = 'ContrailSet';
+
   /**
   * @property eventEmitter
   * @type String
