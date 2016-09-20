@@ -5,6 +5,7 @@ var VRouterSet = require('./VRouterSet');
 //var ContrailNode = require('../Node/ContrailNode');
 var DiscoveryClient = require('../Client/DiscoveryClient');
 var util = require('util');
+
 /**
  * Set Module
  *
@@ -25,34 +26,40 @@ var ContrailSet = function(discovery, eventEmitter){
   * @type String
   */
   this.eventEmitter = eventEmitter;
+
   /**
   * @property discoveryClient
   * @type Object
   */
   this.discoveryClient = new DiscoveryClient(discovery);
+
   /**
   * @property configSet
   * @type Object
   */
   this.configSet = new ConfigSet();
+
   /**
   * @property ControlSet
   * @type Object
   */
   this.controlSet = new ControlSet();
+
   /**
   * @property VRouterSet
   * @type Object
   */
   this.vRouterSet = new VRouterSet();
+
   /**
   * @property nodes
   * @type Object
   */
   this.nodes = {};
+
   /**
   * @property error
-  * @type 
+  * @type
   */
   this.error = null;
 };
@@ -125,13 +132,16 @@ ContrailSet.prototype.updateSet = function(callback){
   var self = this;
   async.parallel([
     function(callback){
-      self.configSet.update(self.discoveryClient.path['/clients.json'].data, self.discoveryClient.path['/services.json'].data, callback);
+      self.configSet.update(self.discoveryClient.path['/clients.json'].data,
+      self.discoveryClient.path['/services.json'].data, callback);
     },
     function(callback){
-      self.controlSet.update(self.discoveryClient.path['/clients.json'].data, self.discoveryClient.path['/services.json'].data, callback);
+      self.controlSet.update(self.discoveryClient.path['/clients.json'].data,
+      self.discoveryClient.path['/services.json'].data, callback);
     },
     function(callback){
-      self.vRouterSet.update(self.discoveryClient.path['/clients.json'].data, self.discoveryClient.path['/services.json'].data, callback);
+      self.vRouterSet.update(self.discoveryClient.path['/clients.json'].data,
+      self.discoveryClient.path['/services.json'].data, callback);
     }
   ], function(err){
     callback(null);
@@ -150,10 +160,12 @@ ContrailSet.prototype.updateFromIntrospec = function(callback){
   var configList = [];
   var controlList = [];
   for(i in self.configSet.nodes){
-    configList.push({name: self.configSet.nodes[i].name, ipAddress: self.configSet.nodes[i].ipAddress[0]});
+    configList.push({name: self.configSet.nodes[i].name,
+      ipAddress: self.configSet.nodes[i].ipAddress[0]});
   }
   for(i in self.controlSet.nodes){
-    controlList.push({name: self.controlSet.nodes[i].name, ipAddress: self.controlSet.nodes[i].ipAddress[0]});
+    controlList.push({name: self.controlSet.nodes[i].name,
+      ipAddress: self.controlSet.nodes[i].ipAddress[0]});
   }
   async.waterfall([
     function(callback){
@@ -219,7 +231,8 @@ ContrailSet.prototype.checkServices = function(callback){
 * @return {String} ContrailSet string description
 */
 ContrailSet.prototype.toString = function(){
-  return '###############"\n# ContrailSet #\n###############\n'+util.inspect(contrailSet, false, null, true);
+  return '###############"\n# ContrailSet #\n###############\n'+
+  util.inspect(contrailSet, false, null, true);
 }
 /*
 var main = function(){

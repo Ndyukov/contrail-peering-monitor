@@ -19,6 +19,7 @@ var ControlSet = function(){
 	* @type Object
 	*/
 	this.nodes = [];
+
 	/**
 	* @property types
 	* @type String
@@ -30,7 +31,8 @@ var parseDiscoveryObject = function(objJSON){
 	var filterType = ['ControlNode', 'contrail-control'];
 
 	var nodesJSON = objJSON.services;
-	var controlList = nodesJSON.filter(utils.clientTypeFilter, {field: 'client_type', filter: filterType});
+	var controlList = nodesJSON.filter(utils.clientTypeFilter,
+		{field: 'client_type', filter: filterType});
 	for(i in controlList){
 		controlList[i] = controlList[i]['client_id'].split(':')[0];
 	}
@@ -55,7 +57,7 @@ ControlSet.prototype.exist = function(name){
 }
 
 /**
-* Delete Outdated node 
+* Delete Outdated node
 *
 * @method exist
 * @param {String} nodeList nodeList

@@ -19,6 +19,7 @@ var ConfigSet = function(){
 	* @type Array
 	*/
 	this.nodes = [];
+
 	/**
 	* @property type
 	* @type String
@@ -31,7 +32,8 @@ var parseDiscoveryObject = function(objJSON){
 	'contrail-api', 'contrail-discovery', 'contrail-svc-monitor', 'contrail-schema'];
 
 	var nodesJSON = objJSON.services;
-	var configList = nodesJSON.filter(utils.clientTypeFilter, {field: 'client_type', filter: filterType});
+	var configList = nodesJSON.filter(utils.clientTypeFilter,
+		{field: 'client_type', filter: filterType});
 	for(i in configList){
 		configList[i] = configList[i]['client_id'].split(':')[0];
 	}
@@ -56,7 +58,7 @@ ConfigSet.prototype.exist = function(name){
 }
 
 /**
-* Delete outdated node 
+* Delete outdated node
 *
 * @method deleteOutdatedNode
 * @param {String} nodeList nodeList
