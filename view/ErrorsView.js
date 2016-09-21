@@ -7,6 +7,7 @@ var ErrorsView = function(vRouterSet, width, offset){
   this.vRouterSet = vRouterSet;
   this.type = 'ErrorsView';
   this.view = initView(width, offset);
+  global.kh.registerView(this.view);
 }
 
 var initView = function(width, offset){
@@ -23,6 +24,9 @@ var initView = function(width, offset){
     border: {type: "line", fg: "cyan"},
     columnSpacing: 5, //in chars
     columnWidth: [20, 25] /*in chars*/
+  });
+  table.rows.on('focus', function(){
+    table.rows.interactive = true;
   });
   return table;
 }

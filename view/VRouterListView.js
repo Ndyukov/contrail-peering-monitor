@@ -8,6 +8,7 @@ var VRouterListView = function(controlName, vRouterData, width, offset){
   this.data = vRouterData;
   this.type = 'VRouterListView';
   this.view = initView(width, offset);
+  global.kh.registerView(this.view);
 }
 
 var initView = function(width, offset){
@@ -24,6 +25,9 @@ var initView = function(width, offset){
     border: {type: "line", fg: "cyan"},
     columnSpacing: 5, //in chars
     columnWidth: [20, 25] /*in chars*/
+  });
+  table.rows.on('focus', function(){
+    table.rows.interactive = true;
   });
   return table;
 }

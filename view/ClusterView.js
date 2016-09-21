@@ -1,6 +1,8 @@
 var blessed = require('blessed');
 var contrib = require('blessed-contrib');
 var util = require('util');
+
+var common = require('./common');
 var utils = require('../src/utils');
 var ContrailSetView = require('./ContrailSetView');
 var ErrorsView = require('./ErrorsView');
@@ -29,8 +31,7 @@ var initView = function(){
 
 ClusterView.prototype.init = function(){
   var offset = (100/3);
-  var width = 70;
-  var errorView = new ErrorsView(this.data.vRouterSet, 99-width, width+1);
+  var width = 100;
 
   // check disco
   if(this.data.error){
@@ -39,12 +40,12 @@ ClusterView.prototype.init = function(){
   }
 
   // check nodes in error
-  if(errorView.isErrors()){
+  if(common.parsevRoutersInError(this.data.vRouterSet).data.length){
+    width = 70;
+    var errorView = new ErrorsView(this.data.vRouterSet, 99-width, width+1);
     this.children.push(errorView);
   }
-  else{
-    width = 100;
-  }
+
   this.children.push(new ContrailSetView(this.data, width, 0));
 
   for(i in this.children){

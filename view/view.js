@@ -1,7 +1,9 @@
 var blessed = require('blessed');
 var contrib = require('blessed-contrib');
 var async = require('async');
+
 var utils = require('../src/utils');
+var KeyHandler = require('./KeyHandler');
 var ViewState = require('./ViewState');
 var ContrailSetView = require('./ContrailSetView');
 var ClusterView = require('./ClusterView');
@@ -22,17 +24,19 @@ var hasChanged = function(self, contrailSet){
 }
 
 var createView = function(self, data){
+  // Create the view
   self.clusterView = new ClusterView(data);
   screen.append(self.clusterView.view);
+  // Update the view state
+  self.state.update(data);
 }
 
 var updateView = function(self, data){
-  //self.clusterView = new ClusterView(data);
   self.clusterView.update(data);
-  //screen.append(self.clusterView.view);
 }
 
 var cleanView = function(nodeView){
+  kh.clear();
   nodeView.view.destroy();
 }
 
@@ -43,28 +47,27 @@ var renderView = function(){
 View.prototype.update = function(contrailSet){
   var data = contrailSet;
   if(this.clusterView == null){
-    global.screen.log('View Null');
     createView(this, data);
   }
   else if(hasChanged(this, data)){
-    global.screen.log('Has changed');
     cleanView(this.clusterView);
     createView(this, data);
   }
-  global.screen.log('update');
   updateView(this, data);
   renderView();
 }
 
+// Initiate the screen object
 var screen = blessed.screen({
   smartCSR: true,
-  log: 'log/view.log'
+  //log: 'log/view.log'
 });
+
+// Initiate the keyboard handler
+var kh = new KeyHandler();
+kh.setupHandler(screen);
 
 global.screen = screen;
-
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-   return process.exit(0);
-});
+global.kh = kh;
 
 module.exports = View;
