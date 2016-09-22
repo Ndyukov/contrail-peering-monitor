@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Specify the Contrail Discovery entry point
+# The key could be:
+#   CONTRAIL_DISCOVERY_URL
+#   CONTRAIL_DISCOVERY
+#   CONTRAIL_DISCO_URL
+#   CONTRAIL_DISCO
+#   DISCOVERY_URL
+
+export CONTRAIL_DISCO=localhost

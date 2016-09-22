@@ -1,6 +1,6 @@
 {
   "name": "contrail-peering-monitor",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Lightweight tool to monitor OpenContrail services",
   "main": "contrail-peering-monitor",
   "dependencies": {

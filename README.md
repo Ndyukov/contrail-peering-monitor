@@ -5,10 +5,13 @@
     $ git clone https://github.com/cloudwatt/contrail-peering-monitor
     $ npm install
 
-## Version
- v.1.2.1
-
 ## Usage
+    $ cd ./contrail-peering-monitor
+    $ vim samples/contrailrc # Edit the rc files if necessary
+    $ . samples/contrailrc
+    $ ./contrail-peering-monitor monitor
+
+## Help
     $ ./contrail-peering-monitor --help
 
     Usage: contrail-peering-monitor [options] [command]
@@ -24,6 +27,15 @@
 
     -h, --help     output usage information
     -V, --version  output the version number
+
+## Keyboard
+ * **Control + ⇨** : Move to the next frame
+ * **Control + ⇦** : Move to the previous frame
+ * **⇧** : Go up across the items
+ * **⇩** : Go down across the items
+
+## Version
+  v.1.2.3
 
 ## Prerequisites
  * [nodejs v0.10.25] (https://nodejs.org/dist/v0.10.25/docs/)
