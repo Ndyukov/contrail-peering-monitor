@@ -2,18 +2,18 @@ var async = require('async');
 var util = require('util');
 var utils = require('../utils');
 /**
- * Client Module
- *
- * @module Client
- */
+* Client Module
+*
+* @module Client
+*/
 
- /**
- * IntrospecVRouterClient description ...
- *
- * @class IntrospecVRouterClient
- * @constructor
- * @param {String} name name
- */
+/**
+* IntrospecVRouterClient description ...
+*
+* @class IntrospecVRouterClient
+* @constructor
+* @param {String} name name
+*/
 var IntrospecVRouterClient = function(name){
   /**
   * @property name
@@ -33,13 +33,13 @@ var IntrospecVRouterClient = function(name){
 }
 
 /**
-* getDataFromPath description 
+* getDataFromPath description
 *
 * @async
 * @method getDataFromPath
 * @param {String} path path of something
 * @param {Function} callback callback function
-*/ 
+*/
 IntrospecVRouterClient.prototype.getDataFromPath = function(path, callback){
   var self = this;
   self.path[path].error = false;

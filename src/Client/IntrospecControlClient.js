@@ -33,13 +33,13 @@ var IntrospecControlClient = function(name){
 }
 
 /**
-* getDataFromPath description 
+* getDataFromPath description
 *
 * @async
 * @method getDataFromPath
 * @param {String} path path of something
 * @param {Function} callback callback function
-*/ 
+*/
 IntrospecControlClient.prototype.getDataFromPath = function(path, callback){
   var self = this;
   self.path[path].error = false;
