@@ -2,7 +2,7 @@ var program = require('commander');
 
 var parse = function(){
   program
-  .version('1.2.3');
+  .version('1.2.4');
 
   program
   .command('monitor')
@@ -18,7 +18,7 @@ var parse = function(){
 
     init.initFromExtConfig();
     init.initFromEnv();
-    init.initFromOptions(program);
+    init.initFromOptions(options);
     init.checkConfig();
     monitor.run();
   });
@@ -38,7 +38,7 @@ var parse = function(){
 
     init.initFromExtConfig();
     init.initFromEnv();
-    init.initFromOptions(program);
+    init.initFromOptions(options);
     init.checkConfig();
 
     if(options.configSet) sets.push('configSet');
