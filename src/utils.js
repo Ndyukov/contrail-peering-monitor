@@ -3,6 +3,15 @@ var unirest = require('unirest');
 var fs = require('fs');
 var xml2js = require('xml2js');
 
+if(!global.config){
+  global.config = {
+    discovery : null,
+    analytics : null,
+    timeout : 5000,
+    refreshTime : 5500
+  }
+}
+
 //@async
 var requestJSON = function(href, callback){
   unirest.get(href)
