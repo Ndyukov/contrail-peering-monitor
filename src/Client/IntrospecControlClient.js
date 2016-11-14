@@ -25,10 +25,15 @@ var IntrospecControlClient = function(name){
   * @type Object
   */
   this.path = {};
-  this.path['/Snh_IFMapPeerServerInfoReq']= {
+  this.path['/Snh_IFMapPeerServerInfoReq'] = {
     data : {},
     error : false,
     url : "http://"+name+":8083/Snh_IFMapPeerServerInfoReq" // localhost --> name
+  }
+  this.path['/Snh_ShowBgpNeighborSummaryReq'] = {
+    data : {},
+    error : false,
+    url : "http://"+name+":8083/Snh_ShowBgpNeighborSummaryReq" // localhost --> name
   }
 }
 
@@ -93,7 +98,9 @@ var main = function(){
       introspec.get(callback);
     }
   ],function(err){
-    console.log(""+introspec);
+    introspec = introspec.path['/Snh_ShowBgpNeighborSummaryReq'].data['ShowBgpNeighborSummaryResp']['neighbors'][0]['list'][0]['BgpNeighborResp'];
+    console.log(""+util.inspect(introspec[5].encoding[0]._));
+    //console.log(JSON.stringify(introspec));
   });
 }
 

@@ -2,6 +2,8 @@ var async = require('async');
 var utils = require('../utils');
 var IntrospecControlClient = require('../Client/IntrospecControlClient');
 var Service = require('../Entity/Service');
+var BgpPeers = require('../Entity/BgpPeers');
+
 /**
  * Node Module
  *
@@ -43,9 +45,14 @@ var ControlNode = function(name){
   this.services = [];
   /**
   * @property ifmapPeer
-  * @type Pbject
+  * @type Object
   */
   this.ifmapPeer = {};
+  /**
+  * @property BgpPeer
+  * @type Object
+  */
+  this.bgpPeers = new BgpPeers(this.name);
 }
 
 var parseDiscoveryClientObject = function(objJSON, name){
@@ -182,6 +189,7 @@ ControlNode.prototype.updateFromIntrospec = function(configList){
   if(!self.introspecControlClient.path['/Snh_IFMapPeerServerInfoReq'].error){
     self.ifmapPeer = updateIfmap(self.introspecControlClient.path['/Snh_IFMapPeerServerInfoReq'].data, configList);
   }
+  self.bgpPeers.update(self.introspecControlClient.path['/Snh_ShowBgpNeighborSummaryReq']);
 }
 
 /**
