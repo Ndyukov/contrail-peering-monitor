@@ -44,7 +44,7 @@ var VRouterNode = function(name, dataSource){
   this.services = [];
   /**
   * @property ifmapPeer
-  * @type Pbject
+  * @type Object
   */
   this.xmppPeer = {};
 }

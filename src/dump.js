@@ -27,8 +27,19 @@ var run = function(sets){
       update(callback);
     }
   ],function(err, res){
-    //global.contrailSet.configSet;
     for(s in sets){
+      if(sets[s] == "controlSet"){
+        var controlSet = global.contrailSet[sets[s]].nodes;
+        for(var node in controlSet){
+          delete controlSet[node].introspecControlClient;
+        }
+      }
+      if(sets[s] == "vRouterSet"){
+        var vRouterSet = global.contrailSet[sets[s]].nodes;
+        for(var node in vRouterSet){
+          delete vRouterSet[node].introspecVRouterClient;
+        }
+      }
       console.log(JSON.stringify(global.contrailSet[sets[s]]));
     }
   });
