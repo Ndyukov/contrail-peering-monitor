@@ -12,3 +12,5 @@
 * Add logs with winston module
 * Centralize template for widget
 * Set the documentation configuration in th contrail-peering-monitor.json
+* Remove the introspec client in the dump result
+* Refactoring IFMAP part
