@@ -67,7 +67,7 @@ Service.prototype.check = function(callback){
 * Service get description
 *
 * @method setStatus
-* @param {String} status new status' name 
+* @param {String} status new status' name
 */
 Service.prototype.setStatus = function(status){
 	this.status = status;

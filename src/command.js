@@ -2,14 +2,14 @@ var program = require('commander');
 
 var parse = function(){
   program
-  .version('1.3.1');
+  .version('1.3.2');
 
   program
   .command('monitor')
   .description('Run the monitoring dashboard on the Contrail cluster')
   .option('-d, --discovery <hostname>', 'Discovery service address')
   //.option('-a, --analytics <hostname>', 'Analytics address')
-  .option('-t, --timeout <time>', 'Request timeout', parseInt)
+  .option('-t, --timeout <time>', 'Request timeout (in ms)', parseInt)
   .option('-r, --refresh-time <time>', 'Interval to refresh data (in ms)',
   parseInt)
   .action(function(options){

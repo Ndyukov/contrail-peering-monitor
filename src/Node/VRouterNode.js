@@ -2,6 +2,7 @@ var async = require('async');
 var utils = require('../utils');
 var IntrospecVRouterClient = require('../Client/IntrospecVRouterClient');
 var Service = require('../Entity/Service');
+var XmppPeer = require('../Entity/XmppPeer');
 /**
  * Node Module
  *
@@ -43,10 +44,10 @@ var VRouterNode = function(name, dataSource){
   */
   this.services = [];
   /**
-  * @property ifmapPeer
+  * @property xmppPeer
   * @type Object
   */
-  this.xmppPeer = {};
+  this.xmppPeer = new XmppPeer();
 }
 
 var parseDiscoveryClientObject = function(objJSON, name){
@@ -80,45 +81,6 @@ var parseDiscoveryObject = function(discoClientJSON, name){
   return vRouterList;
 }
 
-var parseIntrospecXmpp = function(introspecJSON){
-  var status = null;
-  var xmppPeer = introspecJSON['AgentXmppConnectionStatus']['peer'][0]['list'][0]['AgentXmppData'];
-  var xmpp = {
-    active: null,
-    backup: null
-  };
-  for(i in xmppPeer){
-    status = 'Backup';
-    if(xmppPeer[i]['cfg_controller'][0]['_'] == 'Yes'){
-      xmpp.active = xmppPeer[i]['controller_ip'][0]['_'];
-      continue;
-    }
-    if(xmppPeer[i]['cfg_controller'][0]['_'] == 'No'){
-      xmpp.backup = xmppPeer[i]['controller_ip'][0]['_'];
-      continue;
-    }
-  }
-  return xmpp;
-}
-
-var ipToHostnameXmpp = function(xmppPeer, controlList){
-  for(i in controlList){
-    if(xmppPeer.active == controlList[i].ipAddress){
-      xmppPeer.active = controlList[i].name;
-    }
-    if(xmppPeer.backup == controlList[i].ipAddress){
-      xmppPeer.backup = controlList[i].name;
-    }
-  }
-  return xmppPeer;
-}
-
-var updateXmpp = function(introspecJSON, controlList){
-  var xmppPeer = parseIntrospecXmpp(introspecJSON);
-  xmppPeer = ipToHostnameXmpp(xmppPeer, controlList);
-  return xmppPeer;
-}
-
 /**
 * update description
 *
@@ -143,9 +105,8 @@ VRouterNode.prototype.update = function(discoClientJSON, discoServiceJSON){
 */
 VRouterNode.prototype.updateFromIntrospec = function(controlList){
   var self = this;
-  self.xmppPeer = null;
   if(!self.introspecVRouterClient.path['/Snh_AgentXmppConnectionStatusReq'].error){
-    self.xmppPeer = updateXmpp(self.introspecVRouterClient.path['/Snh_AgentXmppConnectionStatusReq'].data, controlList);
+    self.xmppPeer.update(self.introspecVRouterClient.path['/Snh_AgentXmppConnectionStatusReq'].data, controlList);
   }
 }
 
