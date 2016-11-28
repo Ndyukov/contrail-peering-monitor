@@ -2,6 +2,7 @@ var async = require('async');
 var utils = require('../utils');
 var IntrospecControlClient = require('../Client/IntrospecControlClient');
 var Service = require('../Entity/Service');
+var IfmapPeer = require('../Entity/IfmapPeer');
 var BgpPeers = require('../Entity/BgpPeers');
 
 /**
@@ -47,9 +48,9 @@ var ControlNode = function(name){
   * @property ifmapPeer
   * @type Object
   */
-  this.ifmapPeer = {};
+  this.ifmapPeer = new IfmapPeer();
   /**
-  * @property BgpPeer
+  * @property bgpPeer
   * @type Object
   */
   this.bgpPeers = new BgpPeers(this.name);
@@ -118,49 +119,6 @@ var parseDiscoveryObject = function(discoClientJSON, discoServiceJSON, name){
   return controlList;
 }
 
-var parseIntrospecIfmap = function(introspecJSON){
-  var status = null;
-  var ifmapJSON = introspecJSON['IFMapPeerServerInfoResp']['ds_peer_info'][0];
-  var ifmap = {
-    peer: [],
-    current: null
-  };
-  var ifmapPeer = ifmapJSON['IFMapDSPeerInfo'][0]['ds_peer_list'][0]['list'][0]['IFMapDSPeerInfoEntry'];
-  for(i in ifmapPeer){
-    status = 'Backup';
-    if(JSON.parse(ifmapPeer[i]['in_use'][0]['_'])) status = 'Active';
-    ifmap.peer.push({host: ifmapPeer[i]['host'][0]['_'], status: status});
-  }
-  ifmap.current = ifmapJSON['IFMapDSPeerInfo'][0]['current_peer'][0]['_'].split(':')[0];
-  return ifmap;
-}
-
-var ipToHostnameIfmap = function(ifmapPeer, configList){
-  // Check ifmap.peer
-  for(i in ifmapPeer.peer){
-    for(j in configList){
-      if(ifmapPeer.peer[i].host == configList[j].ipAddress){
-        ifmapPeer.peer[i].host = configList[j].name;
-        break;
-      }
-    }
-  }
-  // Check ifmap.current
-  for(j in configList){
-    if(ifmapPeer.current == configList[j].ipAddress){
-      ifmapPeer.current = configList[j].name;
-      break;
-    }
-  }
-  return ifmapPeer;
-}
-
-var updateIfmap = function(introspecJSON, configList){
-  var ifmapPeer = parseIntrospecIfmap(introspecJSON);
-  ifmapPeer = ipToHostnameIfmap(ifmapPeer, configList);
-  return ifmapPeer;
-}
-
 /**
 * update description
 *
@@ -185,11 +143,13 @@ ControlNode.prototype.update = function(discoClientJSON, discoServiceJSON){
 */
 ControlNode.prototype.updateFromIntrospec = function(configList){
   var self = this;
-  self.ifmapPeer = null;
+  //self.ifmapPeer = null;
   if(!self.introspecControlClient.path['/Snh_IFMapPeerServerInfoReq'].error){
-    self.ifmapPeer = updateIfmap(self.introspecControlClient.path['/Snh_IFMapPeerServerInfoReq'].data, configList);
+    self.ifmapPeer.update(self.introspecControlClient.path['/Snh_IFMapPeerServerInfoReq'].data, configList);
   }
-  self.bgpPeers.update(self.introspecControlClient.path['/Snh_ShowBgpNeighborSummaryReq']);
+  if(!self.introspecControlClient.path['/Snh_ShowBgpNeighborSummaryReq'].error){
+    self.bgpPeers.update(self.introspecControlClient.path['/Snh_ShowBgpNeighborSummaryReq']);
+  }
 }
 
 /**
