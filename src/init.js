@@ -3,6 +3,8 @@ var util = require('util');
 var unirest = require('unirest');
 var externalConfig = require('../config/contrail-peering-monitor.json');
 
+var TIME_DIFF = 500;
+
 global.config = {
   discovery : null,
   analytics : null,
@@ -29,17 +31,27 @@ var initFromOptions = function(program){
   if(program.analytics){
     global.config.analytics = program.analytics;
   }
-  if(program.timeout){
+  if(program.timeout && program.refreshTime){
     global.config.timeout = program.timeout;
-  }
-  if(program.refreshTime){
     global.config.refreshTime = program.refreshTime;
+  }
+  else if(program.timeout && ! program.refreshTime){
+    global.config.timeout = program.timeout;
+    global.config.refreshTime = global.config.timeout + TIME_DIFF;
+  }
+  else if(!program.timeout && program.refreshTime){
+    global.config.refreshTime = program.refreshTime;
+    global.config.timeout = global.config.refreshTime - TIME_DIFF;
   }
 }
 
 var checkConfig = function(){
   if(!global.config.discovery){
     console.log('You have to precise DISCOVERY');
+    process.exit(1);
+  }
+  if(global.config.timeout >= global.config.refreshTime){
+    console.log('Timeout (default=5000ms) must be smaller than refresh-time (default=5500ms)');
     process.exit(1);
   }
 }
