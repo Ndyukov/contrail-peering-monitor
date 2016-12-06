@@ -125,7 +125,10 @@ ControlSet.prototype.updateFromIntrospec = function(configList, callback){
 ControlSet.prototype.getIntrospec = function(callback){
 	var self = this;
   async.forEachOf(self.nodes, function(node, key, callback){
-    node.getIntrospec(callback);
+		if(!node){
+			callback(null);
+		}
+		node.getIntrospec(callback);
   }, function(err){
     callback(null);
   });
@@ -141,7 +144,10 @@ ControlSet.prototype.getIntrospec = function(callback){
 ControlSet.prototype.checkServices = function(callback){
 	var self = this;
   async.forEachOf(self.nodes, function(node, key, callback){
-    node.checkServices(callback);
+		if(!node){
+			callback(null);
+		}
+		node.checkServices(callback);
   }, function(err){
     callback(null);
   });

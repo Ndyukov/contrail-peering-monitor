@@ -111,7 +111,10 @@ ConfigSet.prototype.update = function(discoClientJSON, discoServiceJSON, callbac
 ConfigSet.prototype.checkServices = function(callback){
 	var self = this;
   async.forEachOf(self.nodes, function(node, key, callback){
-    node.checkServices(callback);
+		if(!node){
+			callback(null);
+		}
+		node.checkServices(callback);
   }, function(err){
     callback(null);
   });
