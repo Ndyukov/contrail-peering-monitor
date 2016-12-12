@@ -22,7 +22,7 @@ var initView = function(name, width, offset){
     height: '90%',
     border: {type: "line", fg: "cyan"},
     columnSpacing: 5, //in chars
-    columnWidth: [20, 25] /*in chars*/
+    columnWidth: [22, 25] /*in chars*/
   });
   return table;
 }
@@ -40,6 +40,12 @@ var parseData = function(data){
     for(i in data.ifmapPeer.peer){
       result.data.push(['IFMAP '+data.ifmapPeer.peer[i].status,
       data.ifmapPeer.peer[i].host]);
+    }
+  }
+  if(data.bgpPeers){
+    for(i in data.bgpPeers.peers){
+      result.data.push([data.bgpPeers.peers[i].name,
+      data.bgpPeers.peers[i].state.toUpperCase()]);
     }
   }
   return result;

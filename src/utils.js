@@ -77,11 +77,11 @@ var clientTypeFilter = function(elem){
 var setColorTag = function(content){
   for(i in content.data){
     for(j in content.data[i]){
-      if(content.data[i][j] == 'UP'){
-        content.data[i][j] = '{green-fg}UP{/}';
+      if(content.data[i][j] == 'UP' || content.data[i][j] == 'ESTABLISHED'){
+        content.data[i][j] = '{green-fg}'+content.data[i][j]+'{/}';
       }
       if(content.data[i][j] == 'DOWN'){
-        content.data[i][j] = '{red-fg}DOWN{/}';
+        content.data[i][j] = '{red-fg}'+content.data[i][j]+'{/}';
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "name": "Contrail Peering Monitor",
   "description": "Lightweight tool to monitor OpenContrail services",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "url": "https://github.com/cloudwatt/contrail-peering-monitor",
   "options": {
     "outdir": "docs",

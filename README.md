@@ -35,7 +35,7 @@
  * **⇩** : Go down across the items
 
 ## Version
-  v.1.3.4
+  v.1.3.5
 
 ## Prerequisites
  * [nodejs v0.10.25] (https://nodejs.org/dist/v0.10.25/docs/)
