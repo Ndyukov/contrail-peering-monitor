@@ -9,7 +9,8 @@ global.config = {
   discovery : null,
   analytics : null,
   timeout : 5000,
-  refreshTime : 5500
+  refreshTime : 5500,
+  vrouter : null
 };
 
 var initFromExtConfig = function(){
@@ -42,6 +43,9 @@ var initFromOptions = function(program){
   else if(!program.timeout && program.refreshTime){
     global.config.refreshTime = program.refreshTime;
     global.config.timeout = global.config.refreshTime - TIME_DIFF;
+  }
+  if(program.vrouter){
+    global.config.vrouter = program.vrouter;
   }
 }
 

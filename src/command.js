@@ -2,7 +2,7 @@ var program = require('commander');
 
 var parse = function(){
   program
-  .version('1.3.5');
+  .version('1.3.6');
 
   program
   .command('monitor')
@@ -30,7 +30,8 @@ var parse = function(){
   .option('-d, --discovery <hostname>', 'Discovery service address')
   .option('--cnf, --config-set', 'Configuration Nodes')
   .option('--ctl, --control-set', 'Control Nodes')
-  .option('--vr, --vrouter-set', 'VRouters')
+  .option('--vrs, --vrouter-set', 'VRouters Set')
+  .option('--vr, --vrouter <hostname>', 'VRouter address')
   .action(function(options){
     var init = require('./init');
     var dump = require('./dump');
@@ -44,6 +45,7 @@ var parse = function(){
     if(options.configSet) sets.push('configSet');
     if(options.controlSet) sets.push('controlSet');
     if(options.vrouterSet) sets.push('vRouterSet');
+    if(options.vrouter) sets.push('vRouterDetailsNode');
 
     if(!sets) console.log('No options provided !');
 

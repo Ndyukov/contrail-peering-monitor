@@ -35,10 +35,12 @@
  * **⇩** : Go down across the items
 
 ## Version
-  v.1.3.5
+  v.1.3.6
 
 ## Prerequisites
  * [nodejs v0.10.25] (https://nodejs.org/dist/v0.10.25/docs/)
+
+## Node.js dependencies
  * [async](https://www.npmjs.com/package/async)
  * [commander.js](https://www.npmjs.com/package/commander)
  * [blessed](https://github.com/chjj/blessed)

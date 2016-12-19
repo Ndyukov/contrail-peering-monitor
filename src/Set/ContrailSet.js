@@ -2,7 +2,7 @@ var async = require('async');
 var ConfigSet = require('./ConfigSet');
 var ControlSet = require('./ControlSet');
 var VRouterSet = require('./VRouterSet');
-//var ContrailNode = require('../Node/ContrailNode');
+var VRouterDetailsNode = require('../Node/VRouterDetailsNode');
 var DiscoveryClient = require('../Client/DiscoveryClient');
 var util = require('util');
 
@@ -58,6 +58,8 @@ var ContrailSet = function(discovery, eventEmitter){
   * @type Object
   */
   this.nodes = {};
+
+  // useless
 
   /**
   * @property error
@@ -226,6 +228,25 @@ ContrailSet.prototype.checkServices = function(callback){
   });
 }
 
+ContrailSet.prototype.augment = function(metadata, callback){
+  var self = this;
+  if(metadata.type == 'VRouterDetailsNode'){
+    this.vRouterDetailsNode = new VRouterDetailsNode(metadata.args.hostname);
+    async.waterfall([
+      function(callback){
+        self.vRouterDetailsNode.getIntrospec(callback);
+      },
+      function(callback){
+        self.vRouterDetailsNode.updateFromIntrospec(callback);
+      }
+    ], function(err){
+      if(err){
+        self.error = 'Introspec not responding';
+      }
+      callback(null);
+    });
+  }
+}
 /**
 * toString description
 *
