@@ -27,8 +27,13 @@ var parseIntrospecIfmap = function(introspecJSON){
   var ifmapPeer = ifmapJSON['IFMapDSPeerInfo'][0]['ds_peer_list'][0]['list'][0]['IFMapDSPeerInfoEntry'];
   for(i in ifmapPeer){
     status = 'Backup';
-    if(JSON.parse(ifmapPeer[i]['in_use'][0]['_'])) status = 'Active';
-    ifmap.peer.push({host: ifmapPeer[i]['host'][0]['_'], status: status});
+    if(JSON.parse(ifmapPeer[i]['in_use'][0]['_'])){
+      status = 'Active';
+      ifmap.peer.unshift({host: ifmapPeer[i]['host'][0]['_'], status: status});
+    }
+    else{
+      ifmap.peer.push({host: ifmapPeer[i]['host'][0]['_'], status: status});
+    }
   }
   ifmap.current = ifmapJSON['IFMapDSPeerInfo'][0]['current_peer'][0]['_'].split(':')[0];
   return ifmap;
