@@ -61,6 +61,7 @@ ErrorsView.prototype.update = function(data){
   this.vRouterSet = data;
   var dataSet = parsevRoutersInError(this.vRouterSet);
   dataSet = utils.setColorTag(dataSet);
+  this.view.setLabel('Nodes in error('+dataSet.data.length+')');
   this.view.setData(dataSet);
 }
 

@@ -58,6 +58,7 @@ VRouterListView.prototype.update = function(parent, data){
   this.data = data;
   var dataSet = parseData(this.parent, this.data);
   dataSet = utils.setColorTag(dataSet);
+  this.view.setLabel('vRouters('+dataSet.data.length+')');
   this.view.setData(dataSet);
 }
 
